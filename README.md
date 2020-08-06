@@ -1,8 +1,8 @@
 # StdOutCaptor
 
-This is for my future reference.
+## StdOutCaptor
 
-```
+```java
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -33,6 +33,37 @@ public class StdOutCaptor extends ByteArrayOutputStream {
             throw new AssertionError("Expected captured lines to " +
                     "contain '" + expectedText + "', but was actually: " + lines);
         }
+    }
+}
+```
+
+## ThingThatPrintsToStdOut
+
+```java
+public class ThingThatPrintsToStdOut {
+    public void doThing() {
+        System.out.println("Doing a thing");
+    }
+}
+```
+
+## ThingThatPrintsToStdOutTest
+
+```java
+import org.junit.jupiter.api.Test;
+
+class ThingThatPrintsToStdOutTest {
+
+    private final StdOutCaptor stdOutCaptor = new StdOutCaptor();
+
+    @Test
+    void printMessageToStdOut() {
+        ThingThatPrintsToStdOut thing = new ThingThatPrintsToStdOut();
+        stdOutCaptor.startCapture();
+        thing.doThing();
+        stdOutCaptor.endCapture();
+
+        stdOutCaptor.assertLineCaptured("Doing a thing");
     }
 }
 ```
